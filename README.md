@@ -1,5 +1,9 @@
 # Getting Started
 
+## EULA
+
+Note that this compose stack pulls two containers from Glyptodon. You will need to create an account with them so that you can legally use their containers. For individuals employing their containers for personal use, they generously offer a license for free. That said, I know this isn't optimal; if somebody were willing to find open source alternatives to the Glyptodon containers, I would be grateful for that pull request!
+
 ## Configuration
 
 Rename the file called `config.env` to `.env` and edit the following content to match your system:
