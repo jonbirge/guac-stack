@@ -2,7 +2,7 @@
 
 ## About
 
-This repo is basically just a docker-compose file and associated environment settings file that allows you to instantly stand up an Apache Guacamole stack using Docker. If you don't know what Guacamole is, you probably don't care about this, but if you do you'll know that initially configuring it and setting up the bare database takes a while. This takes advantage of Docker and some really nice containers from Glyptodon to automate the setup of the various services, the creation of the initial SQL database, as well as the configuration of an HTTPS reverse proxy with externally-signed certificates.
+This repo is just a docker-compose file and associated environment settings file that allows you to instantly stand up an Apache Guacamole stack using Docker. If you don't know what Guacamole is, you probably don't care about this, but if you do you'll know that initially configuring it and setting up the bare database takes a while. This takes advantage of Docker and some really nice containers from Glyptodon to automate the setup of the various services, the creation of the initial SQL database, as well as the configuration of an HTTPS reverse proxy with externally-signed certificates.
 
 ## Glyptodon EULA
 
