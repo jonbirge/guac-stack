@@ -12,14 +12,15 @@ Rename the file called `config.env` to `.env` and edit the following content to 
 GUACPASS=[anypassword]
 HOSTNAME=[hostname]
 EMAIL=[email]
+SELFSIGN=["Y"|"N"]
 ```
 
 ## Certificates
 
-If you are ok with self-signed certs, you don't need to do anything. If you want root-signed certs from Let's Encrypt, then edit `docker-compose.yml` as follows:
-- Uncomment the `LETSENCRYPT` variables
-- Delete the `SELF_SIGNED` environment variable
-- Make sure your e-mail address and hostname are correct in your `.env` file
+If you are ok with self-signed certs, you don't need to do anything. If you want root-signed certs from Let's Encrypt, then do the following in `.env`:
+- Set the `SELFSIGN` variable to "N".
+- Make sure `HOSTNAME` is your full public server domain name. 
+- Set your e-mail to something you're willing to give to Let's Encrypt.
 
 ## Running
 
@@ -29,4 +30,4 @@ Once you've configured the environment variables in the `.env` file, you should 
 $ docker-compose up -d
 ```
 
-You could now be able to connect on `https://hostname/guacamole/`
+Connect at `https://hostname/guacamole/`
