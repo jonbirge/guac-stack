@@ -2,9 +2,7 @@ version: "3"
 services:
 
   guacd:
-    image: glyptodon/guacd:2
-    environment:
-      ACCEPT_EULA: "Y"
+    image: guacamole/guacd:1.3.0
 
   db:
     image: glyptodon/guacamole-db-mysql:2
@@ -18,14 +16,16 @@ services:
       GUACAMOLE_PASSWORD: $GUACPASS
 
   guacamole:
-    image: glyptodon/guacamole:2
+    image: guacamole/guacamole:1.3.0
+    volumes:
+      - /config
     environment:
-      ACCEPT_EULA: "Y"
-      GUACD_HOSTNAME: guacd
       MYSQL_HOSTNAME: db
       MYSQL_DATABASE: guacamole_db
-      MYSQL_USERNAME: guacamole_user
+      MYSQL_USER: guacamole_user
       MYSQL_PASSWORD: $GUACPASS
+      GUACAMOLE_HOME: /config
+      GUACD_HOSTNAME: guacd
 
   ssl:
     image: glyptodon/guacamole-ssl-nginx:2
@@ -35,6 +35,7 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       GUACAMOLE_HOSTNAME: guacamole
+      GUACAMOLE_CONTEXT_PATH: "guacamole"
       SSL_HOSTNAME: $HOSTNAME
       SELF_SIGNED: "Y"
       #LETSENCRYPT_ACCEPT_TOS: "Y"
