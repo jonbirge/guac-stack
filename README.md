@@ -7,7 +7,7 @@ Rename the file called `config.env` to `.env` and edit the following content to 
 ```
 GUACPASS=[anypassword]
 HOSTNAME=[hostname]
-EMAIL=[youremail]
+EMAIL=[email]
 ```
 
 ## Certificates
