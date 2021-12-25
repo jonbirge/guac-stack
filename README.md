@@ -1,8 +1,12 @@
 # Getting Started
 
-## EULA
+## About
 
-Note that this compose stack pulls two containers from Glyptodon. You will need to [create an account with Glyptodon](https://glyp.to) so that you can legally use their containers. For individuals employing their containers for personal use, they generously offer a license for free. That said, I know this isn't optimal; if somebody were willing to find open source alternatives to the Glyptodon containers, I would be grateful for that pull request!
+This repo is basically just a docker-compose file and associated environment settings file that allows you to instantly stand up an Apache Guacamole stack using Docker. If you don't know what Guacamole is, you probably don't care about this, but if you do you'll know that initially configuring it and setting up the bare database takes a while. This takes advantage of Docker and some really nice containers from Glyptodon to automate the setup of the various services, the creation of the initial SQL database, as well as the configuration of an HTTPS reverse proxy with externally-signed certificates.
+
+## Glyptodon EULA
+
+Note that this compose stack pulls two container images from Glyptodon. You will need to [create an account with Glyptodon](https://glyp.to) so that you can legally use their software. For individuals employing the containers for personal use, they generously offer a license for free.
 
 ## Configuration
 
@@ -30,4 +34,8 @@ Once you've configured the environment variables in the `.env` file, you should 
 $ docker-compose up -d
 ```
 
-Connect at `https://hostname/guacamole/`
+Connect at `https://hostname/guacamole/`.
+
+## Requests
+
+I know using closed-source software for this isn't optimal; if somebody were able to make or find open source alternatives to the Glyptodon containers, I would be grateful for that pull request! For other minor things, check out the Issues in this repo.
