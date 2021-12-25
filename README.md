@@ -2,12 +2,12 @@
 
 ## Configuration
 
-Create a file called `.env` with the following content:
+Rename the file called `config.env` to `.env` and edit the following content to match your system:
 
 ```
-GUACPASS=[password]
+GUACPASS=[anypassword]
 HOSTNAME=[hostname]
-EMAIL=[your@email]
+EMAIL=[youremail]
 ```
 
 ## Certificates
@@ -16,3 +16,11 @@ If you are ok with self-signed certs, you don't need to do anything. If you want
 - Uncomment the `LETSENCRYPT` variables
 - Delete the `SELF_SIGNED` environment variable
 - Make sure your e-mail address and hostname are correct in your `.env` file
+
+## Running
+
+Once you've configured the environment variables in the `.env` file, you should just be able to run
+
+```
+$ docker-compose up -d
+```
