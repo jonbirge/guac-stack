@@ -28,3 +28,5 @@ Once you've configured the environment variables in the `.env` file, you should 
 ```
 $ docker-compose up -d
 ```
+
+You could now be able to connect on `https://hostname/guacamole/`
