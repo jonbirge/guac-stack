@@ -28,6 +28,7 @@ services:
       - /config
     environment:
       MYSQL_HOSTNAME: db
+      MYSQL_SSL_MODE: disabled
       MYSQL_DATABASE: guacamole_db
       MYSQL_USER: guacamole_user
       MYSQL_PASSWORD: $GUACPASS
