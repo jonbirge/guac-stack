@@ -2,7 +2,7 @@ version: "3"
 services:
 
   guacd:
-    image: guacamole/guacd:1.3.0
+    image: guacamole/guacd:1.4.0
     restart: always
     networks:
       - guacnet
@@ -22,12 +22,13 @@ services:
       - guacnet
 
   guacamole:
-    image: guacamole/guacamole:1.3.0
+    image: guacamole/guacamole:1.4.0
     restart: always
     volumes:
       - /config
     environment:
       MYSQL_HOSTNAME: db
+      MYSQL_SSL_MODE: disabled
       MYSQL_DATABASE: guacamole_db
       MYSQL_USER: guacamole_user
       MYSQL_PASSWORD: $GUACPASS
