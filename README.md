@@ -10,12 +10,12 @@ Note that this compose stack pulls two container images from Glyptodon. You will
 
 ## Configuration
 
-Rename the file called `config.env` to `.env` and edit the following content to match your system:
+Rename the file called `config.env` to `.env` and edit the content to match your system:
 
 ```
 GUACPASS=[anypassword]
 HOSTNAME=[hostname]
-EMAIL=[email]
+EMAIL=[email-for-lets-encrypt]
 SELFSIGN=["Y"|"N"]
 ```
 
