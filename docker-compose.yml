@@ -24,6 +24,8 @@ services:
   guacamole:
     image: guacamole/guacamole:1.4.0
     restart: always
+    ports:
+      - "8080:8080"
     volumes:
       - /config
     environment:
@@ -39,24 +41,7 @@ services:
     depends_on:
       - db
       - guacd
-      - ssl
-
-  ssl:
-    image: glyptodon/guacamole-ssl-nginx:2
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    environment:
-      ACCEPT_EULA: "Y"
-      GUACAMOLE_HOSTNAME: guacamole
-      GUACAMOLE_CONTEXT_PATH: guacamole
-      SSL_HOSTNAME: $HOSTNAME
-      SELF_SIGNED: $SELFSIGN
-      LETSENCRYPT_ACCEPT_TOS: "Y"
-      LETSENCRYPT_EMAIL: $EMAIL
-    networks:
-      - guacnet
 
 networks:
   guacnet:
+  
