@@ -2,13 +2,13 @@ version: "3"
 services:
 
   guacd:
-    image: guacamole/guacd:1.4.0
+    image: guacamole/guacd:latest
     restart: always
     networks:
       - guacnet
 
   db:
-    image: glyptodon/guacamole-db-mysql:2
+    image: glyptodon/guacamole-db-mysql:latest
     restart: always
     volumes:
       - ./db:/var/lib/mysql
@@ -22,7 +22,7 @@ services:
       - guacnet
 
   guacamole:
-    image: guacamole/guacamole:1.4.0
+    image: guacamole/guacamole:latest
     restart: always
     ports:
       - "8080:8080"
@@ -42,6 +42,11 @@ services:
       - db
       - guacd
 
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      
 networks:
   guacnet:
   
