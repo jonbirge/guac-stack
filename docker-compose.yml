@@ -52,7 +52,7 @@ services:
       GUACAMOLE_HOSTNAME: guacamole
       GUACAMOLE_CONTEXT_PATH: guacamole
       SSL_HOSTNAME: $HOSTNAME
-      SELF_SIGNED: $SELFSIGN
+      SELF_SIGNED: "N"
       LETSENCRYPT_ACCEPT_TOS: "Y"
       LETSENCRYPT_EMAIL: $EMAIL
     networks:
