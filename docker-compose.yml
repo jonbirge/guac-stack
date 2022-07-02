@@ -2,13 +2,13 @@ version: "3"
 services:
 
   guacd:
-    image: guacamole/guacd:1.4.0
+    image: guacamole/guacd
     restart: always
     networks:
       - guacnet
 
   db:
-    image: glyptodon/guacamole-db-mysql:2
+    image: glyptodon/guacamole-db-mysql
     restart: always
     volumes:
       - ./db:/var/lib/mysql
@@ -22,7 +22,7 @@ services:
       - guacnet
 
   guacamole:
-    image: guacamole/guacamole:1.4.0
+    image: guacamole/guacamole
     restart: always
     volumes:
       - /config
@@ -42,7 +42,7 @@ services:
       - ssl
 
   ssl:
-    image: glyptodon/guacamole-ssl-nginx:2
+    image: glyptodon/guacamole-ssl-nginx
     restart: always
     ports:
       - "80:80"
@@ -57,6 +57,11 @@ services:
       LETSENCRYPT_EMAIL: $EMAIL
     networks:
       - guacnet
+      
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   guacnet:
