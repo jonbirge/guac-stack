@@ -14,7 +14,7 @@ Rename the file called `config.env` to `.env` and edit the content to match your
 
 ```
 GUACPASS=[anypassword]
-HOSTNAME=[hostname]
+SSL_HOSTNAME=[hostname]
 EMAIL=[email-for-lets-encrypt]
 SELFSIGN=["Y"|"N"]
 ```
