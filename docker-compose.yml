@@ -34,6 +34,8 @@ services:
       MYSQL_PASSWORD: $GUACPASS
       GUACAMOLE_HOME: /config
       GUACD_HOSTNAME: guacd
+    labels:
+      - "us.birge.watchtower.enable=true"
     networks:
       - guacnet
     depends_on:
@@ -45,8 +47,8 @@ services:
     image: glyptodon/guacamole-ssl-nginx
     restart: always
     ports:
-      - "80:80"
       - "443:443"
+      - "80:80"
     environment:
       ACCEPT_EULA: "Y"
       GUACAMOLE_HOSTNAME: guacamole
@@ -57,11 +59,19 @@ services:
       LETSENCRYPT_EMAIL: $EMAIL
     networks:
       - guacnet
-      
+
   watchtower:
     image: containrrr/watchtower
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+    labels:
+      - "us.birge.watchtower.enable=true"
+      
 networks:
   guacnet:
