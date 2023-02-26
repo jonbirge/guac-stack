@@ -34,8 +34,6 @@ services:
       MYSQL_PASSWORD: $GUACPASS
       GUACAMOLE_HOME: /config
       GUACD_HOSTNAME: guacd
-    labels:
-      - "us.birge.watchtower.enable=true"
     networks:
       - guacnet
     depends_on:
@@ -63,15 +61,11 @@ services:
   watchtower:
     image: containrrr/watchtower
     restart: always
+    ports:
+      - "8080:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/timezone:/etc/timezone:ro
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_LABEL_ENABLE=true
-      - WATCHTOWER_INCLUDE_RESTARTING=true
-    labels:
-      - "us.birge.watchtower.enable=true"
+    command: --interval 3600
       
 networks:
   guacnet:
