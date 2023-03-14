@@ -4,11 +4,13 @@ services:
   guacd:
     image: guacamole/guacd
     restart: always
+    environment:
+      ACCEPT_EULA: "Y"
     networks:
       - guacnet
 
   db:
-    image: glyptodon/guacamole-db-mysql
+    image: keeper/guacamole-db-mysql
     restart: always
     volumes:
       - ./db:/var/lib/mysql
@@ -27,6 +29,7 @@ services:
     volumes:
       - /config
     environment:
+      ACCEPT_EULA: "Y"
       MYSQL_HOSTNAME: db
       MYSQL_SSL_MODE: disabled
       MYSQL_DATABASE: guacamole_db
@@ -42,7 +45,7 @@ services:
       - ssl
 
   ssl:
-    image: glyptodon/guacamole-ssl-nginx
+    image: keeper/guacamole-ssl-nginx
     restart: always
     ports:
       - "443:443"
