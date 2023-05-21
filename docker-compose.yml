@@ -20,6 +20,7 @@ services:
       GUACAMOLE_DATABASE: guacamole_db
       GUACAMOLE_USERNAME: guacamole_user
       GUACAMOLE_PASSWORD: $GUACPASS
+      GUACAMOLE_ADMIN_PASSWORD: "admin"
     networks:
       - guacnet
 
