@@ -4,10 +4,29 @@ services:
   guacd:
     image: guacamole/guacd
     restart: always
-    environment:
-      ACCEPT_EULA: "Y"
     networks:
       - guacnet
+
+  guacamole:
+    image: guacamole/guacamole
+    restart: always
+    volumes:
+      - /config
+    environment:
+      TOTP_ENABLED: "true"
+      MYSQL_HOSTNAME: db
+      MYSQL_SSL_MODE: disabled
+      MYSQL_DATABASE: guacamole_db
+      MYSQL_USER: guacamole_user
+      MYSQL_PASSWORD: $GUACPASS
+      GUACAMOLE_HOME: /config
+      GUACD_HOSTNAME: guacd
+    networks:
+      - guacnet
+    depends_on:
+      - db
+      - guacd
+      - ssl
 
   db:
     image: keeper/guacamole-db-mysql
@@ -24,33 +43,12 @@ services:
     networks:
       - guacnet
 
-  guacamole:
-    image: guacamole/guacamole
-    restart: always
-    volumes:
-      - /config
-    environment:
-      ACCEPT_EULA: "Y"
-      MYSQL_HOSTNAME: db
-      MYSQL_SSL_MODE: disabled
-      MYSQL_DATABASE: guacamole_db
-      MYSQL_USER: guacamole_user
-      MYSQL_PASSWORD: $GUACPASS
-      GUACAMOLE_HOME: /config
-      GUACD_HOSTNAME: guacd
-    networks:
-      - guacnet
-    depends_on:
-      - db
-      - guacd
-      - ssl
-
   ssl:
     image: keeper/guacamole-ssl-nginx
     restart: always
     ports:
-      - "443:443"
       - "80:80"
+      - "443:443"
     environment:
       ACCEPT_EULA: "Y"
       GUACAMOLE_HOSTNAME: guacamole
