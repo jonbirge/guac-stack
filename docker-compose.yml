@@ -3,20 +3,28 @@ version: "3"
 services:
   reverse-proxy:
     image: traefik:v2.10
-    # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.birgeresolver.acme.email=admin@birgefuller.com"
+      - "--certificatesresolvers.birgeresolver.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.birgeresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.birgeresolver.acme.httpchallenge.entrypoint=web"
     ports:
       - "80:80"
-      # The Web UI (enabled by --api.insecure=true)
+      - "443:443"
       - "28080:8080"
     volumes:
-      # So Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs:/letsencrypt
 
   whoami:
     image: traefik/whoami
     labels:
       - "traefik.http.routers.whoami.rule=Host(`nyc.birgefuller.com`) && PathPrefix(`/who`)"
+      - "traefik.http.routers.whoami.tls.certresolver=birgeresolver"
 
   db:
     image: keeper/guacamole-db-mysql
@@ -51,6 +59,7 @@ services:
       GUACD_HOSTNAME: guacd
     labels:
       - "traefik.http.routers.guacamole.rule=Host(`nyc.birgefuller.com`) && PathPrefix(`/guacamole`)"
+      - "traefik.http.routers.guacamole.tls.certresolver=birgeresolver"
     depends_on:
       - db
       - guacd
