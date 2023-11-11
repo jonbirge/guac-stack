@@ -1,11 +1,39 @@
 version: "3"
 
 services:
+  reverse-proxy:
+    image: traefik:v2.10
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "28080:8080"
+    volumes:
+      # So Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  whoami:
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`nyc.birgefuller.com`) && PathPrefix(`/who`)"
+
+  db:
+    image: keeper/guacamole-db-mysql
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      ACCEPT_EULA: "Y"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      GUACAMOLE_DATABASE: guacamole_db
+      GUACAMOLE_USERNAME: guacamole_user
+      GUACAMOLE_PASSWORD: $GUACPASS
+      GUACAMOLE_ADMIN_PASSWORD: "admin"
+
   guacd:
     image: guacamole/guacd
     restart: always
-    networks:
-      - guacnet
 
   guacamole:
     image: guacamole/guacamole
@@ -21,51 +49,16 @@ services:
       MYSQL_PASSWORD: $GUACPASS
       GUACAMOLE_HOME: /config
       GUACD_HOSTNAME: guacd
-    networks:
-      - guacnet
+    labels:
+      - "traefik.http.routers.guacamole.rule=Host(`nyc.birgefuller.com`) && PathPrefix(`/guacamole`)"
     depends_on:
       - db
       - guacd
-      - ssl
 
-  db:
-    image: keeper/guacamole-db-mysql
-    restart: always
-    volumes:
-      - ./db:/var/lib/mysql
-    environment:
-      ACCEPT_EULA: "Y"
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      GUACAMOLE_DATABASE: guacamole_db
-      GUACAMOLE_USERNAME: guacamole_user
-      GUACAMOLE_PASSWORD: $GUACPASS
-      GUACAMOLE_ADMIN_PASSWORD: "admin"
-    networks:
-      - guacnet
-
-  ssl:
-    image: keeper/guacamole-ssl-nginx
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    environment:
-      ACCEPT_EULA: "Y"
-      GUACAMOLE_HOSTNAME: guacamole
-      GUACAMOLE_CONTEXT_PATH: guacamole
-      SSL_HOSTNAME: $SSL_HOSTNAME
-      SELF_SIGNED: "N"
-      LETSENCRYPT_ACCEPT_TOS: "Y"
-      LETSENCRYPT_EMAIL: $EMAIL
-    networks:
-      - guacnet
-
-  watchtower:
-    image: containrrr/watchtower
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 3600
-      
-networks:
-  guacnet:
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   restart: always
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   command: --interval 3600
+ 
