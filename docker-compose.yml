@@ -2,7 +2,7 @@ version: "3"
 
 services:
   reverse-proxy:
-    image: traefik:latest
+    image: traefik
     command:
       - "--api.insecure=true"
       - "--providers.docker"
@@ -22,6 +22,16 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./certs:/letsencrypt
+
+  adminer:
+    image: adminer
+    restart: always
+    labels:
+      - "traefik.http.routers.adminer.rule=Host(`nyc.birgefuller.com`) && PathPrefix(`/adminer`)"
+      - "traefik.http.routers.adminer.tls.certresolver=birgeresolver"
+      - "traefik.port=8080"
+    depends_on:
+      - db
 
   whoami:
     image: traefik/whoami
@@ -67,10 +77,9 @@ services:
       - db
       - guacd
 
-  # watchtower:
-  #   image: containrrr/watchtower
-  #   restart: always
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   command: --interval 3600
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 3600
  
